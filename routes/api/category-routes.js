@@ -21,16 +21,27 @@ router.get('/', (req, res) => {
   // be sure to include its associated Products
 });
 
-// router.get('/:id', (req, res) => {
-//   try {
-//     res.render('catagory_id')
-//   } catch (err) {
-//     res.status(400).json(err);
-//   }});
-
-//   // find one category by its `id` value
-
 //   // be sure to include its associated Product;
+
+router.get('/:id', (req, res) => {
+  Category.findOne({
+    where: {
+      id: req.params.id
+    },
+    include: [
+      {
+        model: Product,
+        attributes: ['product_name']
+      }
+    ]
+  })
+  .then(categoryData => res.json(categoryData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+  // be sure to include its associated Products
+});
 
 router.post('/', async (req, res) => {
   // create a new category
@@ -42,17 +53,31 @@ Category.create({
 });
 });
 
+router.put('/:id', (req, res) => {
+  Category.update(req.body,{
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(categoryId => res.json(categoryId))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
+  // be sure to include its associated Products
+});
 
-// router.put('/:id', (req, res) => {
-//   // update a category by its `id` value
-// });
-
-// router.delete('/:id', (req, res) => {
-//   // delete a category by its `id` value
-//   let product = JSON.parse(fs.readFileSync('./models/category.js/'));
-//   let removeProduct = product.filter(item => item.id !== req.params.id);
-//   fs.writeFileSync('./models/category.js/', JSON.stringify(product))
-//   res.json(removeProduct);
-// });
+router.delete('/:id', (req, res) => {
+  Category.destroy({
+    where: {
+      id: req.params.id
+    },
+  })
+  .then(categoryData => res.json(categoryData))
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    }); 
+});
 
 module.exports = router;

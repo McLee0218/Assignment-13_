@@ -4,7 +4,7 @@ const { Tag, Product, ProductTag } = require('../../models');
 // The `/api/tags` endpoint
 
 router.get('/', (req, res) => {
-  Category.findAll({
+ Tag.findAll({
     include: [
       {
         model: Product,
@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
 //   // be sure to include its associated Product;
 
 router.get('/:id', (req, res) => {
-  Category.findOne({
+  Tag.findOne({
     where: {
       id: req.params.id
     },
@@ -44,7 +44,7 @@ router.get('/:id', (req, res) => {
 
 router.post('/', async (req, res) => {
   // create a new category
-Category.create({
+Tag.create({
   category_name: req.body.category_name,
 }).then(categoryData => res.json(categoryData))
 .catch(err => {
@@ -53,7 +53,7 @@ Category.create({
 });
 
 router.put('/:id', (req, res) => {
-  Category.update(req.body,{
+  Tag.update(req.body,{
     where: {
       id: req.params.id
     }
@@ -67,7 +67,7 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  Category.destroy({
+  Tag.destroy({
     where: {
       id: req.params.id
     },
